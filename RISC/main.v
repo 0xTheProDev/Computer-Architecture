@@ -23,16 +23,18 @@
  */
 
 module WorkBench;
-	reg clk;
+	reg clk = 1'b0;
+	integer i;
 	wire cnt;
-	wire [4:0] rsa, rta, wta;
-	wire [31:0] rsd, rtd, wtd;
-	RegisterFile mem(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
-	TestRegFile test(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
+	wire [4:0] rsa, rta, wta, shift;
+	wire [5:0] opcode, func;
+	wire [31:0] inst, rsd, rtd, wtd;
+	IDecode idec(opcode, func, wta, rsa, rta, shift, inst, clk, cnt);
+	TestIDecode tdec(opcode, func, wta, rsa, rta, shift, inst, clk, cnt);
+	// RegisterFile mem(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
+	// TestRegFile tmem(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
 	initial begin
-		if (clk == 1'b0)
-			#01 clk = 1'b1;
-		else
-			#01 clk = 1'b0;
+		for (i = 0; i < 10; i = i + 1)
+			#02 clk = ~clk;
 	end
 endmodule

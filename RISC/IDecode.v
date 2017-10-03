@@ -1,8 +1,9 @@
 /**
- * RISC: Register.v
+ * RISC: IDecode.v
  * Author: Progyan Bhattacharya <progyanb@acm.org>
  *
- * This file contains definition of Register File along with R/W Operation
+ * This file contain Decoder module for Spliting Instruction into several parts
+ * and produce control signal according to Opcode and Function
  * A Test Generator module has been added for unit testing as well.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -23,48 +24,34 @@
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// 32x32-bit Register File module
-module RegisterFile (
-    output reg [31:0] rsd, rtd,
-    input      [31:0] wtd,
-    input      [4:0]  rsa, rta, wta,
+// Instruction Decode module
+module IDecode (
+    output reg [5:0]  opcode, func,
+    output reg [4:0]  rd, rs, rt, shift,
+    input      [31:0] inst,
     input             clk, cnt);
 
-    reg [31:0] RegFile[0:31];
-    integer i;
-    initial begin
-        for (i = 0; i < 32; i = i + 1)
-            RegFile[i] = 0;
-    end
-    always @(*) begin
-        if (cnt && (rsa == wta))
-            rsd = wtd;
-        else if (cnt && (rta == wta))
-            rtd = wtd;
-        else begin
-            rsd <= RegFile[rsa][31:0];
-            rtd <= RegFile[rta][31:0];
-        end
-    end
-    always @(posedge clk) begin
-        if (cnt && (wta != 5'd0))       // FIX: This check does not making any sense
-            RegFile[wta] <= wtd;
+    always @(posedge clk or cnt or inst) begin
+        if (cnt == 1'b1)
+            { opcode, rd, rs, rt, shift, func } = inst;
     end
 endmodule
 
-// Test Generator Module to Test 32x32-bit Register File
-module TestRegFile (
-    input      [31:0] rsd, rtd,
-    output reg [31:0] wtd,
-    output reg [4:0]  rsa, rta, wta,
+// Test Generator Module to Test Instruction Decode module
+module TestIDecode (
+    input      [5:0]  opcode, func,
+    input      [4:0]  rd, rs, rt, shift,
+    output reg [31:0] inst,
     input             clk,
     output reg        cnt);
 
     initial begin
-        $monitor($time,,, "\nAddress1: %b  Data1: %b\nAddress2: %b  Data2: %b", rsa, rsd, rta, rtd);
-            { cnt, rsa, rta } = { 1'b0, 5'd0, 5'd1 };
-        #02 { cnt, wta, wtd } = { 1'b1, 5'd1, 32'd1 };
-        #02 { cnt, wta, wtd } = { 1'b1, 5'd0, 32'd2 };
+        $monitor($time,,, "CC=%b\nInstruction: %b\nOpcode: %b  Function: %b\nDestinaton: %b  Source: %b  Operand: %b  Shift: %b", clk, inst, opcode, func, rd, rs, rt, shift);
+            { cnt, inst } = { 1'b1, 32'd125 };
+        #02 { cnt, inst } = { 1'b1, 32'd132 };
+        #02 { cnt, inst } = { 1'b1, 32'd264 };
+        #02 { cnt, inst } = { 1'b1, 32'd143 };
+        #02 { cnt, inst } = { 1'b1, 32'd279 };
         #02 $finish;
     end
 endmodule

@@ -1,5 +1,5 @@
 /**
- * RISC: Register.v
+ * RISC: RegisterFile.v
  * Author: Progyan Bhattacharya <progyanb@acm.org>
  *
  * This file contains definition of Register File along with R/W Operation
@@ -37,17 +37,17 @@ module RegisterFile (
             RegFile[i] = 0;
     end
     always @(*) begin
-        if (cnt && (rsa == wta))
+        if (cnt && (wta != 5'd0) && (rsa == wta))
             rsd = wtd;
-        else if (cnt && (rta == wta))
+        else if (cnt && (wta != 5'd0) && (rta == wta))
             rtd = wtd;
         else begin
             rsd <= RegFile[rsa][31:0];
             rtd <= RegFile[rta][31:0];
         end
     end
-    always @(posedge clk) begin
-        if (cnt && (wta != 5'd0))       // FIX: This check does not making any sense
+    always @(posedge clk or wta) begin
+        if (cnt && (wta != 5'd0))
             RegFile[wta] <= wtd;
     end
 endmodule
@@ -61,10 +61,11 @@ module TestRegFile (
     output reg        cnt);
 
     initial begin
-        $monitor($time,,, "\nAddress1: %b  Data1: %b\nAddress2: %b  Data2: %b", rsa, rsd, rta, rtd);
+        $monitor($time,,, "CC=%b\nAddress1: %b  Data1: %b\nAddress2: %b  Data2: %b", clk, rsa, rsd, rta, rtd);
             { cnt, rsa, rta } = { 1'b0, 5'd0, 5'd1 };
         #02 { cnt, wta, wtd } = { 1'b1, 5'd1, 32'd1 };
         #02 { cnt, wta, wtd } = { 1'b1, 5'd0, 32'd2 };
+        #02 { cnt, wta, wtd } = { 1'b1, 5'd2, 32'd10 };
         #02 $finish;
     end
 endmodule
