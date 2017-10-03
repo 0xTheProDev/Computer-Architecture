@@ -132,7 +132,7 @@ module TestAdder (
         #02 { a, b } = 8'd6;
         #02 { a, b } = 8'd7;
         #02 { a, b } = 8'd8;
-        #02 { a, b } = 8'd9;
+        #02 { a, b } = 8'd9;                // FIX: Sequence terminated after this
         #02 { a, b } = 8'd10;
         #02 { a, b } = 8'd11;
         #02 { a, b } = 8'd12;

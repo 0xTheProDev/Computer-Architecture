@@ -23,8 +23,16 @@
  */
 
 module WorkBench;
-	wire c;
-	wire [3:0] a, b, s;
-	TestAdder test(s, c, a, b);
-	Adder4b add(s, c, a, b, 1'b0);
+	reg clk;
+	wire cnt;
+	wire [4:0] rsa, rta, wta;
+	wire [31:0] rsd, rtd, wtd;
+	RegisterFile mem(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
+	TestRegFile test(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
+	initial begin
+		if (clk == 1'b0)
+			#01 clk = 1'b1;
+		else
+			#01 clk = 1'b0;
+	end
 endmodule
