@@ -285,5 +285,5 @@ module WorkBench;
 	wire c;
 	wire [3:0] a, b, s;
 	TestGen test(s, c, a, b);
-	Adder4b add(s, c, a, b);
+	Adder4b add(s, c, a, b, 1'b0);
 endmodule
