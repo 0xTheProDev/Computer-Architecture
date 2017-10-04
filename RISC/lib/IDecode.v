@@ -31,11 +31,11 @@ module IDecode (
     input      [31:0] inst,
     input             clk, cnt);
 
-    always @(posedge clk or cnt or inst) begin
-        if (cnt == 1'b1)
+    always @ ( posedge clk or cnt or inst ) begin
+        if ( cnt == 1'b1 )
             { opcode, rd, rs, rt, shift, func } = inst;
     end
-endmodule
+endmodule // IDecode
 
 // Test Generator Module to Test Instruction Decode module
 module TestIDecode (
@@ -54,4 +54,4 @@ module TestIDecode (
         #02 { cnt, inst } = { 1'b1, 32'd279 };
         #02 $finish;
     end
-endmodule
+endmodule // TestIDecode

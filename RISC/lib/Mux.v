@@ -30,7 +30,7 @@ module Mux2b (
 	input  a, b, s);
 
 	assign out = ((~s) & a) | (s & b);
-endmodule
+endmodule // Mux2b
 
 // 4x1 1-bit Multiplexer
 module Mux4b (
@@ -39,7 +39,7 @@ module Mux4b (
 
 	wire [1:0] s;
 	assign s = { s2, s1 };
-	always @(a, b, c, d, s1, s2) begin
+	always @ ( * ) begin
 		if ( { s2, s1 } == 2'b00 )
 			out = a;
 		else if ( { s2, s1 } == 2'b01 )
@@ -49,7 +49,7 @@ module Mux4b (
 		else
 			out = d;
 	end
-endmodule
+endmodule // Mux4b
 
 // 8x1 1-bit Multiplexer
 module Mux8b (
@@ -58,7 +58,7 @@ module Mux8b (
 
 	wire [1:0] s;
 	assign s = { s3, s2, s1 };
-	always @(a, b, c, d, s1, s2) begin
+	always @ ( * ) begin
 		if ( { s3, s2, s1 } == 3'b000 )
 			out = a;
 		else if ( { s3, s2, s1 } == 3'b001 )
@@ -76,7 +76,7 @@ module Mux8b (
 		else
 			out = h;
 	end
-endmodule
+endmodule // Mux8b
 
 // Test Generator Module to Test 2x1 1-bit Multiplexer
 module TestMux (
@@ -98,4 +98,4 @@ module TestMux (
 		#02 { a, b, s } = 3'b111;
 		#02 $finish;
 	end
-endmodule
+endmodule // TestMux

@@ -33,24 +33,24 @@ module RegisterFile (
     reg [31:0] RegFile[0:31];
     integer i;
     initial begin
-        for (i = 0; i < 32; i = i + 1)
+        for ( i = 0; i < 32; i = i + 1 )
             RegFile[i] = 0;
     end
-    always @(*) begin
-        if (cnt && (wta != 5'd0) && (rsa == wta))
+    always @ ( * ) begin
+        if ( cnt && (wta != 5'd0) && (rsa == wta) )
             rsd = wtd;
-        else if (cnt && (wta != 5'd0) && (rta == wta))
+        else if ( cnt && (wta != 5'd0) && (rta == wta) )
             rtd = wtd;
         else begin
             rsd <= RegFile[rsa][31:0];
             rtd <= RegFile[rta][31:0];
         end
     end
-    always @(posedge clk or wta) begin
-        if (cnt && (wta != 5'd0))
+    always @ ( posedge clk or wta ) begin
+        if ( cnt && (wta != 5'd0) )
             RegFile[wta] <= wtd;
     end
-endmodule
+endmodule // RegisterFile
 
 // Test Generator Module to Test 32x32-bit Register File
 module TestRegFile (
@@ -68,4 +68,4 @@ module TestRegFile (
         #02 { cnt, wta, wtd } = { 1'b1, 5'd2, 32'd10 };
         #02 $finish;
     end
-endmodule
+endmodule // TestRegFile

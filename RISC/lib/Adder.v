@@ -31,7 +31,7 @@ module HalfAdder (
 
     xor(sum, augend, addend);
     and(carry, augend, addend);
-endmodule
+endmodule // HalfAdder
 
 // Full Adder Module
 module FullAdder (
@@ -42,7 +42,7 @@ module FullAdder (
     HalfAdder hadd1(p, g, augend, addend);
     HalfAdder hadd2(sum, r, p, cin);
     or(carry, g, r);
-endmodule
+endmodule // FullAdder
 
 // 2-bit Carry Look Ahead Adder
 module Adder2b (
@@ -55,7 +55,7 @@ module Adder2b (
     assign sum = { s2, s1 };
     FullAdder add1(s1, c1, augend[0], addend[0], cin);
     FullAdder add2(s2, carry, augend[1], addend[1], c1);
-endmodule
+endmodule // Adder2b
 
 // 4-bit Carry Look Ahead Adder
 module Adder4b (
@@ -69,7 +69,7 @@ module Adder4b (
     assign sum = { s2, s1 }, { aug2, aug1 } = augend, { adn2, adn1 } = addend;
     Adder2b add1(s1, c1, aug1, adn1, cin);
     Adder2b add2(s2, carry, aug2, adn2, c1);
-endmodule
+endmodule // Adder4b
 
 // 8-bit Carry Look Ahead Adder
 module Adder8b (
@@ -83,7 +83,7 @@ module Adder8b (
     assign sum = { s2, s1 }, { aug2, aug1 } = augend, { adn2, adn1 } = addend;
     Adder4b add1(s1, c1, aug1, adn1, cin);
     Adder4b add2(s2, carry, aug2, adn2, c1);
-endmodule
+endmodule // Adder8b
 
 // 16-bit Carry Look Ahead Adder
 module Adder16b (
@@ -97,7 +97,7 @@ module Adder16b (
     assign sum = { s2, s1 }, { aug2, aug1 } = augend, { adn2, adn1 } = addend;
     Adder8b add1(s1, c1, aug1, adn1, cin);
     Adder8b add2(s2, carry, aug2, adn2, c1);
-endmodule
+endmodule // Adder16b
 
 // 32-bit Carry Look Ahead Adder
 module Adder32b (
@@ -111,7 +111,7 @@ module Adder32b (
     assign sum = { s2, s1 }, { aug2, aug1 } = augend, { adn2, adn1 } = addend;
     Adder16b add1(s1, c1, aug1, adn1, cin);
     Adder16b add2(s2, carry, aug2, adn2, c1);
-endmodule
+endmodule // Adder32b
 
 // Test Generator Module to Test 8-bit Carry Look Ahead Adder
 module TestAdder (
@@ -381,4 +381,4 @@ module TestAdder (
         #02 { a, b } = 8'd255;
 		#02 $finish;
 	end
-endmodule
+endmodule // TestAdder
