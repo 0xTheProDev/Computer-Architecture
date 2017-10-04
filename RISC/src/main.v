@@ -23,18 +23,22 @@
  */
 
 module WorkBench;
-	reg clk = 1'b0;
-	integer i;
-	wire cnt;
-	wire [4:0] rsa, rta, wta, shift;
-	wire [5:0] opcode, func;
-	wire [31:0] inst, rsd, rtd, wtd;
-	IDecode idec(opcode, func, wta, rsa, rta, shift, inst, clk, cnt);
-	TestIDecode tdec(opcode, func, wta, rsa, rta, shift, inst, clk, cnt);
+	// reg clk = 1'b0;
+	// integer i;
+	// wire cnt;
+	// wire [4:0] rsa, rta, wta, shift;
+	// wire [5:0] opcode, func;
+	// wire [31:0] inst, rsd, rtd, wtd;
+	// IDecode idec(opcode, func, wta, rsa, rta, shift, inst, clk, cnt);
+	// TestIDecode tdec(opcode, func, wta, rsa, rta, shift, inst, clk, cnt);
 	// RegisterFile mem(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
 	// TestRegFile tmem(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
-	initial begin
-		for (i = 0; i < 10; i = i + 1)
-			#02 clk = ~clk;
-	end
+	// initial begin
+	// 	for (i = 0; i < 10; i = i + 1)
+	// 		#02 clk = ~clk;
+	// end
+	wire [15:0] imm;
+	wire [31:0] ext;
+	Extender extn(ext, imm);
+	TestExtender test(ext, imm);
 endmodule
