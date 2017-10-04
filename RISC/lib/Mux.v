@@ -3,7 +3,8 @@
  * Author: Progyan Bhattacharya <progyanb@acm.org>
  *
  * This file contains definition of 2x1 1-bit Multiplexer, 4x1 1-bit Multiplexer,
- * and 8x1 1-bit Multiplexer.
+ * 2x1 2-bit Multiplexer, 2x1 4-bit Multiplexer, 2x1 8-bit Multiplexer,
+ * 2x1 16-bit Multiplexer and 2x1 32-bit Multiplexer.
  * A Test Generator module has been added for unit testing as well.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -25,15 +26,20 @@
  */
 
 // 2x1 1-bit Multiplexer
-module Mux2b (
-	output out,
-	input  a, b, s);
+module Mux2 (
+	output reg out,
+	input 	   a, b, s);
 
-	assign out = ((~s) & a) | (s & b);
-endmodule // Mux2b
+	always @ ( * ) begin
+		if ( s )
+			out = b;
+		else
+			out = a;
+	end
+endmodule // Mux2
 
 // 4x1 1-bit Multiplexer
-module Mux4b (
+module Mux4 (
 	output reg out,
 	input      a, b, c, d, s1, s2);
 
@@ -49,34 +55,57 @@ module Mux4b (
 		else
 			out = d;
 	end
+endmodule // Mux4
+
+// 2x1 2-bit Multiplexer
+module Mux2b (
+	output [1:0] out,
+	input  [1:0] a, b,
+	input    	 s);
+
+	Mux2 mux0(out[0], a[0], b[0], s);
+	Mux2 mux1(out[1], a[1], b[1], s);
+endmodule // Mux2b
+
+// 2x1 4-bit Multiplexer
+module Mux4b (
+	output [3:0] out,
+	input  [3:0] a, b,
+	input    	 s);
+
+	Mux2b mux0(out[1:0], a[1:0], b[1:0], s);
+	Mux2b mux1(out[3:2], a[3:2], b[3:2], s);
 endmodule // Mux4b
 
-// 8x1 1-bit Multiplexer
+// 2x1 8-bit Multiplexer
 module Mux8b (
-	output reg out,
-	input 	   a, b, c, d, e, f, g, h, s1, s2, s3);
+	output [7:0] out,
+	input  [7:0] a, b,
+	input    	 s);
 
-	wire [1:0] s;
-	assign s = { s3, s2, s1 };
-	always @ ( * ) begin
-		if ( { s3, s2, s1 } == 3'b000 )
-			out = a;
-		else if ( { s3, s2, s1 } == 3'b001 )
-			out = b;
-		else if ( { s3, s2, s1 } == 3'b010 )
-			out = c;
-		else if ( { s3, s2, s1 } == 3'b011 )
-			out = d;
-		else if ( { s3, s2, s1 } == 3'b100 )
-			out = e;
-		else if ( { s3, s2, s1 } == 3'b101 )
-			out = f;
-		else if ( { s3, s2, s1 } == 3'b110 )
-			out = g;
-		else
-			out = h;
-	end
+	Mux4b mux0(out[3:0], a[3:0], b[3:0], s);
+	Mux4b mux1(out[7:4], a[7:4], b[7:4], s);
 endmodule // Mux8b
+
+// 2x1 16-bit Multiplexer
+module Mux16b (
+	output [15:0] out,
+	input  [15:0] a, b,
+	input    	 s);
+
+	Mux8b mux0(out[7:0], a[7:0], b[7:0], s);
+	Mux8b mux1(out[15:8], a[15:8], b[15:8], s);
+endmodule // Mux16b
+
+// 2x1 32-bit Multiplexer
+module Mux32b (
+	output [31:0] out,
+	input  [31:0] a, b,
+	input    	 s);
+
+	Mux16b mux0(out[15:0], a[15:0], b[15:0], s);
+	Mux16b mux1(out[31:16], a[31:16], b[31:16], s);
+endmodule // Mux32b
 
 // Test Generator Module to Test 2x1 1-bit Multiplexer
 module TestMux (
