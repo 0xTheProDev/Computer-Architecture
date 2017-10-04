@@ -28,12 +28,19 @@
 module IDecode (
     output reg [5:0]  opcode, func,
     output reg [4:0]  rd, rs, rt, shift,
+    output reg [31:0] imm,
     input      [31:0] inst,
     input             clk, cnt);
 
-    always @ ( posedge clk or cnt or inst ) begin
-        if ( cnt == 1'b1 )
+    reg  [15:0] nxt;
+    wire [31:0] ext;
+    Extender extend(ext, nxt);
+    always @ ( * ) begin
+        if ( cnt ) begin
             { opcode, rd, rs, rt, shift, func } = inst;
+            nxt = { rt, shift, func };
+            imm = ext;
+        end
     end
 endmodule // IDecode
 
@@ -41,12 +48,13 @@ endmodule // IDecode
 module TestIDecode (
     input      [5:0]  opcode, func,
     input      [4:0]  rd, rs, rt, shift,
+    input      [31:0] imm,
     output reg [31:0] inst,
     input             clk,
     output reg        cnt);
 
     initial begin
-        $monitor($time,,, "CC=%b\nInstruction: %b\nOpcode: %b  Function: %b\nDestinaton: %b  Source: %b  Operand: %b  Shift: %b", clk, inst, opcode, func, rd, rs, rt, shift);
+        $monitor($time,,, "CC=%b\nInstruction: %b\nOpcode: %b  Function: %b\nDestinaton: %b  Source: %b\nOperand: %b  Shift: %b\nImmidiate: %b", clk, inst, opcode, func, rd, rs, rt, shift, imm);
             { cnt, inst } = { 1'b1, 32'd125 };
         #02 { cnt, inst } = { 1'b1, 32'd132 };
         #02 { cnt, inst } = { 1'b1, 32'd264 };
