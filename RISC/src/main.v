@@ -23,22 +23,8 @@
  */
 
 module WorkBench;
-	reg clk = 1'b0;
-	integer i;
-	wire cnt;
-	wire [4:0] rsa, rta, wta, shift;
-	wire [11:0] ctrl;
-	wire [31:0] inst, rsd, rtd, wtd, imm;
-	// DMem dmem(rtd, wtd, imm, clk, cnt);
-	// TestDMem tmem(rtd, wtd, imm, clk, cnt);
-	// IDecode idec(ctrl, wta, rsa, rta, shift, imm, inst, clk, cnt);
-	// TestIDecode tdec(ctrl, wta, rsa, rta, shift, imm, inst, clk, cnt);
-	// RegisterFile regf(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
-	// TestRegFile tregf(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
-	ALU alu(wtd, rsd, rtd, imm, clk, ctrl);
-	TestALU talu(wtd, rsd, rtd, imm, clk, ctrl);
-	initial begin
-		for (i = 0; i < 10; i = i + 1)
-			#01 clk = ~clk;
-	end
+	wire 	    clk;
+	wire [31:0] pc;
+	CPU cpu(clk, pc);
+	TestCPU tcpu(clk, pc);
 endmodule

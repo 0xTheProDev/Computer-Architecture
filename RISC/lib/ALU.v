@@ -24,6 +24,7 @@
  */
 
 // Arithmetic and Logic Unit
+// Source: https://opencores.org/project,plasma,opcodes
 module ALU (
     output reg [31:0] out,
     input      [31:0] rs, rt, imm,

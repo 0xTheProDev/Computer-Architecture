@@ -30,19 +30,19 @@ module DMem (
     input      [31:0] wdata, addr,
     input             clk, cnt);
 
-    reg [31:0] dmem [0:1023];
+    reg [31:0] DMEM [0:1023];
     integer i;
     initial begin
         for ( i = 0; i < 1024; i = i + 1 )
-            dmem[i] = 32'd0;
+            DMEM[i] = 32'd0;
     end
     always @ ( negedge clk ) begin
         if ( cnt ) begin
-            dmem[addr[9:0]] <= wdata;
+            DMEM[addr[9:0]] <= wdata;
             rdata <= wdata;
         end
         else
-            rdata <= dmem[addr[9:0]];
+            rdata <= DMEM[addr[9:0]][31:0];
     end
 endmodule // DMem
 

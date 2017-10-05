@@ -30,16 +30,16 @@ module IMem (
     input      [31:0] addr,
     input             clk);
 
-    reg [31:0] imem [0:1023];
+    reg [31:0] IMEM [0:1023];
     // parameter ISource = "Instructions.txt";
     integer i;
     initial begin
-        // $readmemh(ISource, imem, 0, 1023);
+        // $readmemh(ISource, IMEM, 0, 1023);
         for ( i = 0; i < 1024; i = i + 1 )
-            imem[i] = 32'd0;
+            IMEM[i] = 32'd0;
     end
     always @ ( * ) begin
-        inst <= imem[addr[9:0]][31:0];
+        inst <= IMEM[addr[9:0]][31:0];
     end
 endmodule // IMem
 

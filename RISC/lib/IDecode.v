@@ -32,19 +32,19 @@ module IDecode (
     input      [31:0] inst,
     input             clk, cnt);            // cnt may not be needed
 
-    reg  [5:0] opcode, func;
-    reg  [15:0] nxt;
+    reg  [5:0] OPC, FUNC;
+    reg  [15:0] NXT;
     wire [31:0] ext;
-    Extender extend(ext, nxt);
+    Extender extend(ext, NXT);
     always @ ( * ) begin
         if ( cnt ) begin
-            { opcode, rd, rs, rt, shift, func } = inst;
-            nxt <= { rt, shift, func };
+            { OPC, rd, rs, rt, shift, FUNC } = inst;
+            NXT <= { rt, shift, FUNC };
             imm <= ext;
-            if ( opcode == 6'd0 )
-                ctrl <= { opcode, func };
+            if ( OPC == 6'd0 )
+                ctrl <= { OPC, FUNC };
             else
-                ctrl <= { opcode, 6'd0 };
+                ctrl <= { OPC, 6'd0 };
         end
     end
 endmodule // IDecode

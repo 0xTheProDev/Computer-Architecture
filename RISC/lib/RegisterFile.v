@@ -30,11 +30,11 @@ module RegisterFile (
     input      [4:0]  rsa, rta, wta,
     input             clk, cnt);
 
-    reg [31:0] RegFile[0:31];
+    reg [31:0] REG[0:31];
     integer i;
     initial begin
         for ( i = 0; i < 32; i = i + 1 )
-            RegFile[i] = 0;
+            REG[i] = 0;
     end
     always @ ( * ) begin
         if ( cnt && (wta != 5'd0) && (rsa == wta) )
@@ -42,13 +42,13 @@ module RegisterFile (
         else if ( cnt && (wta != 5'd0) && (rta == wta) )
             rtd = wtd;
         else begin
-            rsd <= RegFile[rsa][31:0];
-            rtd <= RegFile[rta][31:0];
+            rsd <= REG[rsa][31:0];
+            rtd <= REG[rta][31:0];
         end
     end
     always @ ( posedge clk or wta ) begin
         if ( cnt && (wta != 5'd0) )
-            RegFile[wta] <= wtd;
+            REG[wta] <= wtd;
     end
 endmodule // RegisterFile
 
