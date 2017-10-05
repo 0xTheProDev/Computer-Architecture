@@ -30,7 +30,7 @@ module IDecode (
     output reg [4:0]  rd, rs, rt, shift,
     output reg [31:0] imm,
     input      [31:0] inst,
-    input             clk, cnt);
+    input             clk, cnt);            // cnt may not be needed
 
     reg  [5:0] opcode, func;
     reg  [15:0] nxt;

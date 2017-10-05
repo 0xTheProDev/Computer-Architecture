@@ -31,12 +31,14 @@ module WorkBench;
 	wire [31:0] inst, rsd, rtd, wtd, imm;
 	// DMem dmem(rtd, wtd, imm, clk, cnt);
 	// TestDMem tmem(rtd, wtd, imm, clk, cnt);
-	IDecode idec(ctrl, wta, rsa, rta, shift, imm, inst, clk, cnt);
-	TestIDecode tdec(ctrl, wta, rsa, rta, shift, imm, inst, clk, cnt);
+	// IDecode idec(ctrl, wta, rsa, rta, shift, imm, inst, clk, cnt);
+	// TestIDecode tdec(ctrl, wta, rsa, rta, shift, imm, inst, clk, cnt);
 	// RegisterFile regf(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
 	// TestRegFile tregf(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
+	ALU alu(wtd, rsd, rtd, imm, clk, ctrl);
+	TestALU talu(wtd, rsd, rtd, imm, clk, ctrl);
 	initial begin
 		for (i = 0; i < 10; i = i + 1)
-			#02 clk = ~clk;
+			#01 clk = ~clk;
 	end
 endmodule
