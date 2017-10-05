@@ -29,10 +29,12 @@ module WorkBench;
 	wire [4:0] rsa, rta, wta, shift;
 	wire [5:0] opcode, func;
 	wire [31:0] inst, rsd, rtd, wtd, imm;
-	IDecode idec(opcode, func, wta, rsa, rta, shift, imm, inst, clk, cnt);
-	TestIDecode tdec(opcode, func, wta, rsa, rta, shift, imm, inst, clk, cnt);
-	// RegisterFile mem(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
-	// TestRegFile tmem(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
+	IMem imem(inst, imm, clk);
+	TestIMem tmem(inst, imm, clk);
+	// IDecode idec(opcode, func, wta, rsa, rta, shift, imm, inst, clk, cnt);
+	// TestIDecode tdec(opcode, func, wta, rsa, rta, shift, imm, inst, clk, cnt);
+	// RegisterFile regf(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
+	// TestRegFile tregf(rsd, rtd, wtd, rsa, rta, wta, clk, cnt);
 	initial begin
 		for (i = 0; i < 10; i = i + 1)
 			#02 clk = ~clk;
