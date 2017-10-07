@@ -1,0 +1,3 @@
+[submodule "RNB_Verilog"]
+	path = RNB_Verilog
+	url = https://github.com/RudraNilBasu/verilog
