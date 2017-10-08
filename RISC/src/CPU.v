@@ -28,18 +28,21 @@ module CPU (
     input        clk,
     input [31:0] pc);
 
-    wire [31:0] ir, wdata, rdata, adata, imm;
+    wire [31:0] ir, wdata, aluout, rdata, adata, imm;
     reg  [31:0] PC, IR, WDATA, RDATA, ADATA, IMM;
     wire [11:0] aluctrl;
     reg  [11:0] ALUCTRL;
     wire [4:0]  dest, src, srt, shift;
     reg  [4:0]  DEST, SRC, SRT, SHIFT;
-    wire        regctrl, dmctrl;
-    reg         REGCTRL, DMCTRL;
+    wire [1:0]  dmctrl;
+    reg  [1:0]  DMCTRL;
+    wire        regctrl;
+    reg         REGCTRL;
     IMem imem(ir, pc, clk);
     IDecode idec(aluctrl, dmctrl, dest, src, srt, shift, imm, ir, clk);
     RegisterFile regf(rdata, adata, wdata, src, srt, dest, clk, regctrl);
-    ALU alu(wdata, rdata, adata, imm, clk, aluctrl);
+    ALU alu(aluout, rdata, adata, imm, clk, aluctrl);
+    DMem dmem(wdata, aluout, adata, clk, dmctrl);
     initial begin
         $monitor($time,,, "\nCC: %b\nPC: %b  IR: %b\n", clk, PC, IR);
     end
