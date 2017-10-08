@@ -27,6 +27,7 @@
 // Instruction Decode module
 module IDecode (
     output reg [11:0] ctrl,
+    output reg        wmem,
     output reg [4:0]  rd, rs, rt, shift,
     output reg [31:0] imm,
     input      [31:0] inst,
@@ -45,6 +46,8 @@ module IDecode (
                 ctrl <= { OPC, FUNC };
             else
                 ctrl <= { OPC, 6'd0 };
+            if ( ctrl == 12'd2560 )
+                wmem <= 1'b1;
         end
     end
 endmodule // IDecode
@@ -52,6 +55,7 @@ endmodule // IDecode
 // Test Generator Module to Test Instruction Decode module
 module TestIDecode (
     input      [11:0] ctrl,
+    input             wmem,
     input      [4:0]  rd, rs, rt, shift,
     input      [31:0] imm,
     output reg [31:0] inst,

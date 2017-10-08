@@ -37,7 +37,7 @@ module CPU (
     wire        idctrl, regctrl, dmctrl;
     reg         IDCTRL, REGCTRL, DMCTRL;
     IMem imem(ir, pc, clk);
-    IDecode idec(aluctrl, dest, src, srt, shift, imm, ir, clk, idctrl);
+    IDecode idec(aluctrl, dmctrl, dest, src, srt, shift, imm, ir, clk, idctrl);
     RegisterFile regf(rdata, adata, wdata, src, srt, dest, clk, regctrl);
     ALU alu(wdata, rdata, adata, imm, clk, aluctrl);
     initial begin
