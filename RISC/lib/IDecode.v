@@ -31,24 +31,22 @@ module IDecode (
     output reg [4:0]  rd, rs, rt, shift,
     output reg [31:0] imm,
     input      [31:0] inst,
-    input             clk, cnt);            // cnt may not be needed
+    input             clk);
 
     reg  [5:0] OPC, FUNC;
     reg  [15:0] NXT;
     wire [31:0] ext;
     Extender extend(ext, NXT);
     always @ ( * ) begin
-        if ( cnt ) begin
-            { OPC, rd, rs, rt, shift, FUNC } = inst;
-            NXT <= { rt, shift, FUNC };
-            imm <= ext;
-            if ( OPC == 6'd0 )
-                ctrl <= { OPC, FUNC };
-            else
-                ctrl <= { OPC, 6'd0 };
-            if ( ctrl == 12'd2560 )
-                wmem <= 1'b1;
-        end
+        { OPC, rd, rs, rt, shift, FUNC } = inst;
+        NXT <= { rt, shift, FUNC };
+        imm <= ext;
+        if ( OPC == 6'd0 )
+            ctrl <= { OPC, FUNC };
+        else
+            ctrl <= { OPC, 6'd0 };
+        if ( ctrl == 12'd2560 )
+            wmem <= 1'b1;
     end
 endmodule // IDecode
 
@@ -59,18 +57,17 @@ module TestIDecode (
     input      [4:0]  rd, rs, rt, shift,
     input      [31:0] imm,
     output reg [31:0] inst,
-    input             clk,
-    output reg        cnt);
+    input             clk);
 
     wire [5:0] opcode, func;
     assign { opcode, func } = ctrl;
     initial begin
         $monitor($time,,, "CC=%b\nInstruction: %b\nOpcode: %b  Function: %b\nDestinaton: %b  Source: %b\nOperand: %b  Shift: %b\nImmidiate: %b", clk, inst, opcode, func, rd, rs, rt, shift, imm);
-            { cnt, inst } = { 1'b1, 32'd125 };
-        #02 { cnt, inst } = { 1'b1, 32'd132 };
-        #02 { cnt, inst } = { 1'b1, 32'd264 };
-        #02 { cnt, inst } = { 1'b1, 32'd143 };
-        #02 { cnt, inst } = { 1'b1, 32'd279 };
+            { inst } = { 32'd125 };
+        #02 { inst } = { 32'd132 };
+        #02 { inst } = { 32'd264 };
+        #02 { inst } = { 32'd143 };
+        #02 { inst } = { 32'd279 };
         #02 $finish;
     end
 endmodule // TestIDecode

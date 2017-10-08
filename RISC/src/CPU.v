@@ -34,10 +34,10 @@ module CPU (
     reg  [11:0] ALUCTRL;
     wire [4:0]  dest, src, srt, shift;
     reg  [4:0]  DEST, SRC, SRT, SHIFT;
-    wire        idctrl, regctrl, dmctrl;
-    reg         IDCTRL, REGCTRL, DMCTRL;
+    wire        regctrl, dmctrl;
+    reg         REGCTRL, DMCTRL;
     IMem imem(ir, pc, clk);
-    IDecode idec(aluctrl, dmctrl, dest, src, srt, shift, imm, ir, clk, idctrl);
+    IDecode idec(aluctrl, dmctrl, dest, src, srt, shift, imm, ir, clk);
     RegisterFile regf(rdata, adata, wdata, src, srt, dest, clk, regctrl);
     ALU alu(wdata, rdata, adata, imm, clk, aluctrl);
     initial begin
@@ -54,7 +54,6 @@ module CPU (
         SRC     <= src;
         SRT     <= srt;
         SHIFT   <= shift;
-        IDCTRL  <= idctrl;
         REGCTRL <= regctrl;
         ALUCTRL <= aluctrl;
         DMCTRL  <= dmctrl;
@@ -70,6 +69,7 @@ module TestCPU (
     initial begin
         clk = 0;
         for (pc = 0; pc < 10; pc = pc + 1)
+            #01 clk <= ~clk;
             #01 clk <= ~clk;
     end
 endmodule // TestCPU
