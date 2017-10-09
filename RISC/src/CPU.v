@@ -42,7 +42,7 @@ module CPU (
     IDecode idec(aluctrl, dmctrl, dest, src, srt, shift, imm, ir, clk);
     RegisterFile regf(rdata, adata, wdata, src, srt, dest, clk, regctrl);
     ALU alu(aluout, rdata, adata, imm, clk, aluctrl);
-    DMem dmem(wdata, aluout, adata, clk, dmctrl);
+    DMem dmem(wdata, rdata, aluout, clk, dmctrl);
     initial begin
         $monitor($time,,, "\nCC: %b\nPC: %b  IR: %b\n", clk, PC, IR);
     end
