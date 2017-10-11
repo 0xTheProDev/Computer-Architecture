@@ -142,7 +142,7 @@ module ALU (
     mynand mnand(w7, a, b);
     mynor  mnor(w8, a, b);
     Mux    mux(c, w1, w2, w3, w4, w5, w6, w7, w8, op);
-    assign carry = (~op[0] & w1) | (op[0] & w2);
+    assign carry = (~op[0] & wc1) | (op[0] & wc2);
 endmodule // ALU
 
 // Test Genrator for ALU
