@@ -33,6 +33,7 @@ module RegisterFile (
     reg [31:0] REG[0:31];
     integer i;
     initial begin
+        $monitor("REG:\nREGCTRL: %b\nRSD: %b  RTD: %b  WTD: %b\n", cnt, rsd, rtd, wtd);
         for ( i = 0; i < 32; i = i + 1 )
             REG[i] = 0;
     end
@@ -46,7 +47,7 @@ module RegisterFile (
             rtd <= REG[rta][31:0];
         end
     end
-    always @ ( posedge clk or wta ) begin
+    always @ ( posedge clk ) begin
         if ( cnt && (wta != 5'd0) )
             REG[wta] <= wtd;
     end

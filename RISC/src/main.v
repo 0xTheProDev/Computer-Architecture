@@ -23,8 +23,7 @@
  */
 
 module WorkBench;
-	wire 	    clk;
-	wire [31:0] pc;
-	CPU cpu(clk, pc);
-	TestCPU tcpu(clk, pc);
+	wire clk;
+	CPU cpu(clk);
+	TestCPU tcpu(clk);
 endmodule

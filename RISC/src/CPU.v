@@ -25,8 +25,7 @@
 
 // Central Proccessing Unit (Single Cycle)
 module CPU (
-    input        clk,
-    input [31:0] pc);
+    input clk);
 
     wire [31:0] ir, wdata, aluout, rdata, adata, imm;
     reg  [31:0] PC, IR, WDATA, RDATA, ADATA, IMM;
@@ -38,41 +37,43 @@ module CPU (
     reg  [1:0]  DMCTRL;
     wire        regctrl;
     reg         REGCTRL;
-    IMem imem(ir, pc, clk);
-    IDecode idec(aluctrl, dmctrl, dest, src, srt, shift, imm, ir, clk);
-    RegisterFile regf(rdata, adata, wdata, src, srt, dest, clk, regctrl);
-    ALU alu(aluout, rdata, adata, imm, clk, aluctrl);
-    DMem dmem(wdata, rdata, aluout, clk, dmctrl);
+    IMem imem(ir, PC, clk);
+    IDecode idec(aluctrl, dmctrl, dest, src, srt, shift, imm, IR, clk);
+    RegisterFile regf(rdata, adata, wdata, src, srt, dest, clk, REGCTRL);
+    ALU alu(aluout, RDATA, ADATA, IMM, clk, ALUCTRL);
+    DMem dmem(wdata, rdata, aluout, clk, DMCTRL);
     initial begin
-        $monitor($time,,, "\nCC: %b\nPC: %b  IR: %b\n", clk, PC, IR);
+        $monitor($time,,, "\nCC: %b  CPU:\nPC: %b  IR: %b\n", clk, PC, IR);
+        PC = -32'd1;
     end
     always @ ( * ) begin
-        PC      <= pc;
-        IR      <= ir;
-        WDATA   <= wdata;
-        RDATA   <= rdata;
-        ADATA   <= adata;
-        IMM     <= imm;
-        DEST    <= dest;
-        SRC     <= src;
-        SRT     <= srt;
-        SHIFT   <= shift;
-        REGCTRL <= regctrl;
-        ALUCTRL <= aluctrl;
-        DMCTRL  <= dmctrl;
+        IR      = ir;
+        WDATA   = wdata;
+        RDATA   = rdata;
+        ADATA   = adata;
+        IMM     = imm;
+        DEST    = dest;
+        SRC     = src;
+        SRT     = srt;
+        SHIFT   = shift;
+        REGCTRL = regctrl;
+        ALUCTRL = aluctrl;
+        DMCTRL  = dmctrl;
+    end
+    always @ (negedge clk) begin
+        PC = PC + 32'd1;
     end
 endmodule // CPU
 
 // Test Generator Module to Test CPU module
 module TestCPU (
-    output reg        clk,
-    output reg [31:0] pc);
+    output reg clk);
 
-    integer i;
     initial begin
         clk = 0;
-        for (pc = 0; pc < 10; pc = pc + 1)
-            #01 clk <= ~clk;
-            #01 clk <= ~clk;
+        #10 $finish;
+    end
+    always begin
+        #01 clk <= ~clk;
     end
 endmodule // TestCPU

@@ -38,14 +38,14 @@ module DMem (
             DMEM[i] = 32'd0;
     end
     always @ ( * ) begin
-        if ( cnt == 2'd3 ) begin
-            DMEM[addr[9:0]] <= wdata;
-        end
-        else if ( cnt == 2'd2 )
+        if ( cnt == 2'd2 )
             rdata <= DMEM[addr[9:0]][31:0];
     end
     always @ ( posedge clk ) begin
-        rdata <= wdata;
+        if ( cnt == 2'd3 )
+            DMEM[addr[9:0]] <= wdata;
+        if ( cnt != 2'd2)
+            rdata <= wdata;
     end
 endmodule // DMem
 

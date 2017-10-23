@@ -32,19 +32,20 @@ module ALU (
     input      [11:0] cnt);
 
     always @ ( posedge clk ) begin
+        $monitor("ALU:\nALUCTRL: %d  ALUOUT: %b\nRS: %b  RT: %b  IMM: %b\n", cnt, out, rs, rt, imm);
         case ( cnt )
-            12'd32:   out = rs + rt;
-            12'd512:  out = rs + imm;
-            12'd34:   out = rs - rt;
-            12'd24:   out = rs * rt;
-            12'd26:   out = rs / rt;
-            12'd36:   out = rs & rt;
-            12'd768:  out = rs & imm;
-            12'd37:   out = rs | rt;
-            12'd832:  out = rs | imm;
-            12'd2048: out = rs + imm;
-            12'd2560: out = rs + imm;
-            default:  out = 32'd0;
+            12'd32:   out <= rs + rt;
+            12'd512:  out <= rs + imm;
+            12'd34:   out <= rs - rt;
+            12'd24:   out <= rs * rt;
+            12'd26:   out <= rs / rt;
+            12'd36:   out <= rs & rt;
+            12'd768:  out <= rs & imm;
+            12'd37:   out <= rs | rt;
+            12'd832:  out <= rs | imm;
+            12'd2048: out <= rs + imm;
+            12'd2560: out <= rs + imm;
+            default:  out <= 32'd0;
         endcase
     end
 endmodule //ALU

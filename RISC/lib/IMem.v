@@ -31,15 +31,16 @@ module IMem (
     input             clk);
 
     reg [31:0] IMEM [0:1023];
-    // parameter ISource = "Instructions.txt";
+    // parameter ISource = "Instructions.hex";
     integer i;
     initial begin
         // $readmemh(ISource, IMEM, 0, 1023);
-        for ( i = 0; i < 1024; i = i + 1 )
+        for ( i = 1; i < 1024; i = i + 1 )
             IMEM[i] = 32'd0;
+        IMEM[0] = 32'd512;
     end
     always @ ( * ) begin
-        inst <= IMEM[addr[9:0]][31:0];
+        inst = IMEM[addr[9:0]][31:0];
     end
 endmodule // IMem
 
