@@ -46,7 +46,7 @@ module RegisterFile (
             rtd <= REG[rta][31:0];
         end
     end
-    always @ ( posedge clk or wta ) begin
+    always @ ( posedge clk ) begin
         if ( cnt && (wta != 5'd0) )
             REG[wta] <= wtd;
     end
