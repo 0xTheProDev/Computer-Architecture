@@ -41,7 +41,7 @@ module RegBus(
     always @( Rw or clk ) begin
         if (Rw == 1)
             iclk = clk;
-        else 
+        else
             iclk = 0;
     end
 endmodule
@@ -52,7 +52,7 @@ module TestGen(
     input            clk);
 
     initial begin
-        $monitor($time,,, "CC: %b  RW: %b  Data: %b\n", clk, Rw, d);
+        $monitor($time,,, "Mode: %b  Data: %b\n", Rw, d);
             Pr = 1'b0;
             Rs = 1'b1;
             Rw = 1'b1;
